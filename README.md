@@ -9,7 +9,7 @@ Change images to embeds
 
 This assumes that a url can be represented as both an images and an embeddable object. For example the following markdown
 
-```markdown
+```
 ![example_feature](cartoverse.com/feature/example1)
 ```
 
@@ -20,7 +20,7 @@ Can be represented as both an image and an interactive element (a map) therefore
 To install
 
 ```
-npm install orangemug/remark-embed
+npm install orangemug/remark-embed --save
 ```
 
 
