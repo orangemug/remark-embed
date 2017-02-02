@@ -9,62 +9,49 @@ var remarkPlugins = {
 }
 
 
-var TEST_FILES = {
-  noembed: {
+var TEST_FILES = [
+  {
+    title: "noembed",
     input:    fs.readFileSync(__dirname+"/data/noembed.input.md"),
     plugin:   require("./data/noembed.plugin.json"),
     noplugin: require("./data/noembed.noplugin.json"),
   },
-  embed: {
+  {
+    title: "embed",
+    opts: {
+      replacements: [
+        {
+          url: /^http:\/\/example.com\/map\/([0-9]+)$/,
+          template: function(url, matches, alt) {
+            return '<iframe src="map-placeholder.html?id='+matches[1]+'&alt='+alt+'"></iframe>'
+          }
+        }
+      ]
+    },
     input:    fs.readFileSync(__dirname+"/data/embed.input.md"),
     plugin:   require("./data/embed.plugin.json"),
     noplugin: require("./data/embed.noplugin.json"),
   }
-};
+];
 
 describe("remark-embed", function() {
 
-  var embedOpts = {
-    replacements: [
-      {
-        url: /^http:\/\/example.com\/map\/([0-9]+)$/,
-        template: function(url, matches, alt) {
-          return '<iframe src="map-placeholder.html?id='+matches[1]+'&alt='+alt+'"></iframe>'
-        }
-      }
-    ]
-  };
+  TEST_FILES.forEach(function(test) {
+    it(test.title, function() {
+      var ast = remark()
+        .parse(test.input)
 
-  it("noembed", function() {
-    var ast = remark()
-      .parse(TEST_FILES.noembed.input)
+      var noPluginAst = remark()
+        .run(ast)
 
-    var noPluginAst = remark()
-      .run(ast)
+      assert.deepEqual(noPluginAst, test.noplugin);
 
-    assert.deepEqual(noPluginAst, TEST_FILES.noembed.noplugin);
+      var pluginAst = remark()
+        .use(embed, test.opts)
+        .run(ast)
 
-    var pluginAst = remark()
-      .use(embed, embedOpts)
-      .run(ast)
-
-    assert.deepEqual(pluginAst, TEST_FILES.noembed.plugin);
-  });
-
-  it("embed", function() {
-    var ast = remark()
-      .parse(TEST_FILES.embed.input)
-
-    var noPluginAst = remark()
-      .run(ast)
-
-    assert.deepEqual(noPluginAst, TEST_FILES.embed.noplugin);
-
-    var pluginAst = remark()
-      .use(embed, embedOpts)
-      .run(ast)
-
-    assert.deepEqual(pluginAst, TEST_FILES.embed.plugin);
+      assert.deepEqual(pluginAst, test.plugin);
+    });
   });
 
   it("README", function(done) {
@@ -73,5 +60,4 @@ describe("remark-embed", function() {
       done();
     });
   });
-
 });
