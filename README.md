@@ -10,7 +10,7 @@ Change images to embeds
 This assumes that a url can be represented as both an images and an embeddable object. For example the following markdown
 
 ```
-![example_feature](cartoverse.com/feature/example1)
+![example feature](cartoverse.com/feature/example1)
 ```
 
 Can be represented as both an image and an interactive element (a map) therefore depending on the context we want to embed it as such
