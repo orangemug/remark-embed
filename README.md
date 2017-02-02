@@ -37,7 +37,7 @@ var html = remark()
     replacements: [
       {
         url: /^http:\/\/example.com\/map\/([0-9]+)$/,
-        template: function(url, matches, alt) {
+        template: function(alt, url, matches) {
           return '<iframe src="'+url+'"></iframe>';
         }
       }

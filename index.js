@@ -7,19 +7,33 @@ module.exports = function(remark, opts) {
   }, opts);
 
   var replacements = opts.replacements.map(function(replacement) {
-    return {
-      url: replacement.url,
-      template: replacement.template
-    };
+    if(typeof(replacement) === "object") {
+      return function(alt, url) {
+        var rUrl = replacement.url;
+        if(!(rUrl instanceof RegExp)) {
+          rUrl = new RegExp("^"+rUrl+"$");
+        }
+
+        var matches = rUrl.exec(url);
+        if(matches) {
+          return replacement.template(alt, url, matches);
+        }
+      }
+    }
+    else if(typeof(replacement) === "function") {
+      return replacement;
+    }
+    else {
+      throw new Error("Invalid type");
+    }
   });
 
   function findReplacement(replacements, url, alt) {
     for(var i=0; i<replacements.length; i++) {
-      var matches = replacements[i].url.exec(url);
-      if(matches) {
-        return {
-          html: replacements[i].template(url, matches, alt)
-        };
+      var replacement = replacements[i];
+      var out = replacement(alt, url);
+      if(out !== undefined) {
+        return out;
       }
     }
   }
@@ -38,7 +52,7 @@ module.exports = function(remark, opts) {
       if(replacement) {
         replace(parent, node, index, {
           type: "html",
-          value: replacement.html,
+          value: replacement,
           position: node.position,
           data: {
             width: 200,

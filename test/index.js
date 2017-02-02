@@ -17,14 +17,50 @@ var TEST_FILES = [
     noplugin: require("./data/noembed.noplugin.json"),
   },
   {
-    title: "embed",
+    title: "embed regexp",
     opts: {
       replacements: [
         {
           url: /^http:\/\/example.com\/map\/([0-9]+)$/,
-          template: function(url, matches, alt) {
+          template: function(alt, url, matches) {
             return '<iframe src="map-placeholder.html?id='+matches[1]+'&alt='+alt+'"></iframe>'
           }
+        }
+      ]
+    },
+    input:    fs.readFileSync(__dirname+"/data/embed.input.md"),
+    plugin:   require("./data/embed.plugin.json"),
+    noplugin: require("./data/embed.noplugin.json"),
+  },
+  {
+    title: "embed string",
+    opts: {
+      replacements: [
+        {
+          url: "http://example.com/map/1",
+          template: function(alt, url) {
+            var re = /^http:\/\/example.com\/map\/([0-9]+)$/;
+            var matches = re.exec(url);
+            return '<iframe src="map-placeholder.html?id='+matches[1]+'&alt='+alt+'"></iframe>'
+          }
+        }
+      ]
+    },
+    input:    fs.readFileSync(__dirname+"/data/embed.input.md"),
+    plugin:   require("./data/embed.plugin.json"),
+    noplugin: require("./data/embed.noplugin.json"),
+  },
+  {
+    title: "embed function",
+    opts: {
+      replacements: [
+        function() {
+          // Invalid...
+        },
+        function(alt, url) {
+          var re = /^http:\/\/example.com\/map\/([0-9]+)$/;
+          var matches = re.exec(url);
+          return '<iframe src="map-placeholder.html?id='+matches[1]+'&alt='+alt+'"></iframe>'
         }
       ]
     },
