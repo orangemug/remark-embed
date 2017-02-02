@@ -1,7 +1,8 @@
-var assert = require("assert");
-var fs     = require("fs");
-var remark = require("remark");
-var embed  = require("../");
+var assert       = require("assert");
+var fs           = require("fs");
+var remark       = require("remark");
+var embed        = require("../");
+var readmeTester = require("readme-tester");
 
 var remarkPlugins = {
   html: require("remark-html")
@@ -64,6 +65,13 @@ describe("remark-embed", function() {
       .run(ast)
 
     assert.deepEqual(pluginAst, TEST_FILES.embed.plugin);
-  })
+  });
+
+  it("README", function(done) {
+    readmeTester(__dirname+"/../README.md", function(err, assertions) {
+      assert(err);
+      done();
+    });
+  });
 
 });
