@@ -36,8 +36,8 @@ var html = remark()
   .use(embed, {
     replacements: [
       {
-        regexp: /^http:\/\/example.com\/map\/([0-9]+)$/,
-        handle: function(url, matches, alt) {
+        url: /^http:\/\/example.com\/map\/([0-9]+)$/,
+        template: function(url, matches, alt) {
           return '<iframe src="'+url+'"></iframe>';
         }
       }

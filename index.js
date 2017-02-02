@@ -8,17 +8,17 @@ module.exports = function(remark, opts) {
 
   var replacements = opts.replacements.map(function(replacement) {
     return {
-      regexp: replacement.regexp,
-      handle: replacement.handle
+      url: replacement.url,
+      template: replacement.template
     };
   });
 
   function findReplacement(replacements, url, alt) {
     for(var i=0; i<replacements.length; i++) {
-      var matches = replacements[i].regexp.exec(url);
+      var matches = replacements[i].url.exec(url);
       if(matches) {
         return {
-          html: replacements[i].handle(url, matches, alt)
+          html: replacements[i].template(url, matches, alt)
         };
       }
     }
