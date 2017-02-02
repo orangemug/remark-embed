@@ -1,10 +1,10 @@
 # remark-embed
 Change images to embeds
 
-[![stability-unstable](https://img.shields.io/badge/stability-unstable-yellow.svg)][stability]
+[![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)][stability]
 [![Build Status](https://circleci.com/gh/orangemug/remark-embed.png?style=shield)][circleci]
 
-[stability]:   https://github.com/orangemug/stability-badges#unstable
+[stability]:   https://github.com/orangemug/stability-badges#experimental
 [circleci]:    https://circleci.com/gh/orangemug/remark-embed
 
 This assumes that a url can be represented as both an images and an embeddable object. For example the following markdown
