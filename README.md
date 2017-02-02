@@ -29,6 +29,8 @@ Example usage
 
 ```js
 var remark = require("remark");
+var embed  = require("remark-embed");
+var html   = require("remark-html");
 
 var html = remark()
   .use(embed, {
@@ -44,7 +46,7 @@ var html = remark()
   .use(html)
   .process("![Simple Map](http://example.com/map/1)");
 
-assert.equal(html, '<p><iframe src="http://example.com/map/1"></iframe></p>');
+assert.equal(html.contents, '<p><iframe src="http://example.com/map/1"></iframe></p>\n');
 ```
 
 

@@ -69,7 +69,7 @@ describe("remark-embed", function() {
 
   it("README", function(done) {
     readmeTester(__dirname+"/../README.md", function(err, assertions) {
-      assert(err);
+      assert.ifError(err);
       done();
     });
   });
